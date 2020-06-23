@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import LeftBar from './LeftBar';
 
@@ -13,11 +13,14 @@ const Container = styled.div`
 `;
 
 
-
-function App(){
+function App(props){
+  const [servers, setServers] = useState([{name:"서버111", active:"off"}, {name:"김서버11", active:"on"}]);
+  useEffect(()=>{
+    document.title="Chat-app";
+  })
   return (
       <Container>
-        <LeftBar />
+        <LeftBar setServers={setServers} servers={servers}/>
       </Container>
   );
 }
