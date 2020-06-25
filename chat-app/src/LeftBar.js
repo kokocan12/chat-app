@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 
@@ -82,10 +82,6 @@ const Server = styled.div`
 
 
 function LeftBar(props){
-
-    
-    useEffect((servers)=>{
-    });
 
     function changeActive(index){
         const tmp=props.servers;
