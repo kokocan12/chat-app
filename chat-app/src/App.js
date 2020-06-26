@@ -22,7 +22,7 @@ function App(props){
     document.title="Chat-app";
     setTimeout(()=>{
       setIsLoading(false);
-    },3000);
+    },1000);
   });
 
   if(isLoading){
