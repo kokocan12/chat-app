@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const Container=styled.div`
     padding:10px;
     display:flex;
+    flex-grow:1;
     flex-direction:column;
 `;
 
@@ -15,6 +16,14 @@ const Member=styled.div`
     flex-direction:row;
     align-items:center;
     user-select:none;
+    &:hover{
+        background-color:rgb(57,60,66);
+        border-radius:5px;
+        cursor:pointer;
+    }
+    &:hover span{
+        color:white;
+    }
 `;
 
 const Icon=styled.img`
@@ -22,6 +31,7 @@ const Icon=styled.img`
     height:32px;
     border-radius:16px;
     margin-right:8px;
+    user-drag:none;
 `;
 
 const Name=styled.span`

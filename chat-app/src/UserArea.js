@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import MemberContainer from './MemberContainer';
+import Settings from './Settings';
 
 
 const Container = styled.div`
@@ -60,6 +61,7 @@ function UserArea(props){
             <InviteButton>친구초대하기</InviteButton>
             <MemberCounter>온라인-1</MemberCounter>
             <MemberContainer />
+            <Settings />
         </Container>
     )
 }

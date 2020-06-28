@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import LeftBar from './LeftBar';
 import UserArea from './UserArea';
+import ChatArea from './ChatArea';
 import Loading from './Loading';
 
 const Container = styled.div`
@@ -16,13 +17,21 @@ const Container = styled.div`
 
 
 function App(props){
-  const [servers, setServers] = useState([{name:"서버111", active:"off"}, {name:"김서버11", active:"on"}]);
+  const [servers, setServers] = useState([{name:"공부", active:"off"}, {name:"잡담", active:"on"}]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentServer, setCurrentServer] = useState({name:"잡담", active:"on"});
   useEffect(()=>{
     document.title="Chat-app";
     setTimeout(()=>{
       setIsLoading(false);
     },1000);
+  });
+  useEffect(()=>{
+    servers.forEach(el=>{
+      if(el.active==='on'){
+        setCurrentServer(el);
+      }
+    })
   });
 
   if(isLoading){
@@ -32,6 +41,7 @@ function App(props){
       <Container>
         <LeftBar setServers={setServers} servers={servers}/>
         <UserArea/>
+        <ChatArea title={currentServer.name} />
       </Container>
   );
   }
