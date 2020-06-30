@@ -6,6 +6,7 @@ const Container = styled.div`
     display:flex;
     flex-direction:column;
     width:100%;
+    flex-grow:1;
 `;
 
 const Message=styled.div`

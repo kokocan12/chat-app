@@ -19,7 +19,6 @@ const ServerAdd = styled.span`
     color:rgb(67,181,129);
     font-size:40px;
     margin:10px 0 10px 0;
-    vertical-align:middle;
     transition:200ms;
     text-align:center;
     user-select:none;
@@ -83,7 +82,7 @@ const Server = styled.div`
 
 function LeftBar(props){
 
-    function changeActive(index){
+    const changeActive=(index)=>{
         const tmp=props.servers;
         tmp.forEach(el=>{
             el.active="off";
@@ -92,14 +91,15 @@ function LeftBar(props){
         props.setServers([...tmp]);
     }
 
+
     
 
     return(
         <Container>
             <div>
-                <ServerAdd data-tooltip={"서버 추가하기"}>+</ServerAdd>
+                <ServerAdd onClick={()=>{props.setServerModal(true)}} data-tooltip={"채팅 추가하기"}>+</ServerAdd>
                 {props.servers.map((el, index)=>{
-                    return <Server onClick={()=>changeActive(index)} key={index} selected={el.active} data-tooltip={el.name}>{el.name[0]}</Server>
+                    return <Server onClick={()=>changeActive(index)} key={el.key} selected={el.active} data-tooltip={el.name}>{el.name[0]}</Server>
                 })}
             </div>
         </Container>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ChatBox from './ChatBox';
+import ChatInput from './ChatInput';
 
 const Container = styled.div`
     flex-grow:1;
@@ -43,6 +44,7 @@ function ChatArea(props){
             <HeaderTitle>채팅창</HeaderTitle>
         </Header>
         <ChatBox />
+        <ChatInput />
     </Container>
     );
 }

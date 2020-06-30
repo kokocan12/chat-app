@@ -57,7 +57,7 @@ const MemberCounter = styled.div`
 function UserArea(props){
     return(
         <Container>
-            <Header>Title</Header>
+            <Header>{props.title}</Header>
             <InviteButton>친구초대하기</InviteButton>
             <MemberCounter>온라인-1</MemberCounter>
             <MemberContainer />

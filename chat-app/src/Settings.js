@@ -17,7 +17,6 @@ const Icon=styled.img`
     height:32px;
     border-radius:16px;
     margin-right:8px;
-    user-drag:none;
 `;
 
 const Name=styled.span`
@@ -34,7 +33,6 @@ const SettingIcon=styled.img`
     width:23px;
     height:23px;
     margin:10px;
-    user-drag:none;
     cursor:pointer;
 `;
 
