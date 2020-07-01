@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 
 
 const Container = styled.div`
-    width:82px;
+    min-width:82px;
     background-color:rgb(32,34,37);
     display:flex;
     flex-direction:column;
@@ -77,7 +77,29 @@ const Server = styled.div`
         background-color:black;
         font-size:20px;
     }
-`
+`;
+
+const ContextMenuWrapper=styled.div`
+    position:relative;
+    width:0;
+    height:0;
+`;
+
+const ContextMenu=styled.div`
+    position:absolute;
+    width:70px;
+    height:40px;
+    left:60px;
+    top:-30px;
+    background-color:red;
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:bold;
+    line-height:40px;
+    border-radius:10px;
+    z-index:100;
+`;
 
 
 function LeftBar(props){
@@ -91,15 +113,39 @@ function LeftBar(props){
         props.setServers([...tmp]);
     }
 
+    const serverContextMenu=(key)=>{
+        const newServers=props.servers.map(el=>{
+            if(el.key===key){
+                const newEl={...el, contextMenu:true}
+                return newEl;
+            } else {
+                const newEl={...el, contextMenu:false}
+                return newEl;
+            }
+        });
+        props.setServers(newServers);
+    }
 
-    
+    const deleteServer=(key)=>{
+        const newServers=props.servers.filter(el=>{
+            if(el.key!==key){
+                return el;
+            }
+        });
+        setTimeout(()=>{
+            props.setServers(newServers);
+        }, 0);
+        
+    }
 
     return(
         <Container>
             <div>
                 <ServerAdd onClick={()=>{props.setServerModal(true)}} data-tooltip={"채팅 추가하기"}>+</ServerAdd>
                 {props.servers.map((el, index)=>{
-                    return <Server onClick={()=>changeActive(index)} key={el.key} selected={el.active} data-tooltip={el.name}>{el.name[0]}</Server>
+                    return <Server onContextMenu={evt=>{evt.preventDefault(); serverContextMenu(el.key)}} onClick={()=>changeActive(index)} key={el.key} selected={el.active} data-tooltip={el.name}>{el.name[0]}
+                                {el.contextMenu&&<ContextMenuWrapper><ContextMenu onClick={(evt)=>{evt.preventDefault(); deleteServer(el.key);}}>삭제하기</ContextMenu></ContextMenuWrapper>}
+                            </Server>
                 })}
             </div>
         </Container>

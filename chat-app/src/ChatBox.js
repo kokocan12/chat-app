@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect, createRef} from 'react';
 import styled from 'styled-components';
 
 
@@ -7,6 +7,22 @@ const Container = styled.div`
     flex-direction:column;
     width:100%;
     flex-grow:1;
+    max-height:${props=>props.height};
+    overflow:auto;
+    &::-webkit-scrollbar-track{
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: rgb(54,57,63);
+    }
+    &::-webkit-scrollbar{
+        width: 12px;
+        background-color: rgb(54,57,63);
+    }
+    &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: rgb(32,34,37);
+    }
 `;
 
 const Message=styled.div`
@@ -71,37 +87,52 @@ const MessageType2=styled.div`
 `;
 
 function ChatBox(props){
+
+    const Messages=props.currentServer.chatLog.map(el=>{
+        let imgSrc='';
+        switch(el.name){
+            case "Me":
+                imgSrc=process.env.PUBLIC_URL+"default-img.jpg";
+                break;
+            case "피카츄":
+                imgSrc=process.env.PUBLIC_URL+"pikachu.png";
+                break;
+            case "파이리":
+                imgSrc=process.env.PUBLIC_URL+"파이리.png";
+                break;
+            case "꼬부기":
+                imgSrc=process.env.PUBLIC_URL+"꼬부기.jpg";
+                break;
+            case "이상해씨":
+                imgSrc=process.env.PUBLIC_URL+"이상해씨.jpg";
+                break;
+        }
+        const ojunohu = el.hours>=12?'오후':'오전';
+        const hours_=el.hours>12? el.hours-12:el.hours;
+        const minutes_=el.minutes<10? `0${el.minutes}`:`${el.minutes}`;
+        return(
+            <Message key={Math.random().toString()}>
+                <Icon src={imgSrc} />
+                <RightCol>
+                    <NameArea>
+                        <Name>{el.name}</Name><Time>{ojunohu} {hours_}:{minutes_}</Time>
+                    </NameArea>
+                    <Contents>
+                        {el.content}
+                    </Contents>
+                </RightCol>
+            </Message>
+        );
+    });
+
+    const height=window.innerHeight-150+'px';
+    const [containerRef, setContainerRef] = useState(()=>createRef());
+    useEffect(()=>{
+        containerRef.current.scrollTop=containerRef.current.scrollHeight;
+    })
     return(
-        <Container>
-            <Message>
-                <Icon src={process.env.PUBLIC_URL+"default-img.jpg"} />
-                <RightCol>
-                    <NameArea>
-                        <Name>Me</Name><Time>오후 8:55</Time>
-                    </NameArea>
-                    <Contents>
-                        <Emoji src={process.env.PUBLIC_URL+"emoji/깜찍.svg"} />
-                        안녕하세요
-                    </Contents>
-                </RightCol>
-            </Message>
-            <MessageType2>
-                반가워요
-                <Emoji src={process.env.PUBLIC_URL+"emoji/깜찍.svg"} />
-            </MessageType2>
-            <Message>
-                <Icon src={process.env.PUBLIC_URL+"default-img.jpg"} />
-                <RightCol>
-                    <NameArea>
-                        <Name>Me</Name><Time>오후 9:50</Time>
-                    </NameArea>
-                    <Contents>
-                        <Emoji src={process.env.PUBLIC_URL+"emoji/깜찍.svg"} />
-                        그래요 그래요~그래요 그래요~그래요 그래요~그래요 그래요~그래요 그래요~그래요 그래요~그래요 그래요~그래요 그래요~
-                        <Emoji src={process.env.PUBLIC_URL+"emoji/깜찍.svg"} />sdsadsadsadsaㅇㄴㅁㅇㄴㅁㅇㄴㅁ
-                    </Contents>
-                </RightCol>
-            </Message>
+        <Container ref={containerRef} height={height} onClick={()=>props.setEmojiBox(false)}>
+            {Messages}
         </Container>
     );
 }

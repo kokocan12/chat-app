@@ -71,7 +71,8 @@ function CreateServerModal(props){
         props.servers.forEach(el=>{
             el.active="off";
         });
-        props.setServers([...props.servers, {name:nameRef.current.value, active:"on", key:Math.random().toString()}]);
+        props.setServers([...props.servers, {name:nameRef.current.value, active:"on", key:Math.random().toString(),
+            friends:["Me"], contextMenu:false, chatLog:[]}]);
     }
 
     return (

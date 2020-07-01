@@ -5,7 +5,7 @@ import Settings from './Settings';
 
 
 const Container = styled.div`
-    width:240px;
+    min-width:240px;
     height:100%;
     background-color:rgb(47,49,54);
     display:flex;
@@ -51,16 +51,16 @@ const MemberCounter = styled.div`
     color:#829297;
     font-size:12px;
     font-weight:600;
-    user-select:none;
+    user-select:none;   
 `;
 
 function UserArea(props){
     return(
-        <Container>
+        <Container onClick={props.offContextMenu}>
             <Header>{props.title}</Header>
-            <InviteButton>친구초대하기</InviteButton>
-            <MemberCounter>온라인-1</MemberCounter>
-            <MemberContainer />
+            <InviteButton onClick={()=>props.setInviteModal(true)}>친구초대하기</InviteButton>
+            <MemberCounter>온라인-{props.currentServer.friends.length}</MemberCounter>
+            <MemberContainer currentServer={props.currentServer} />
             <Settings />
         </Container>
     )

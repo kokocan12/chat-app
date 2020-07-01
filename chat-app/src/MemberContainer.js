@@ -31,7 +31,6 @@ const Icon=styled.img`
     height:32px;
     border-radius:16px;
     margin-right:8px;
-    user-drag:none;
 `;
 
 const Name=styled.span`
@@ -41,10 +40,27 @@ const Name=styled.span`
 `;
 
 function MemberContainer(props){
+
+    const MemberList = 
+    props.currentServer.friends.map((el, index)=>{
+        let imgSrc='';
+        if(el==='Me'){
+            imgSrc=process.env.PUBLIC_URL+"default-img.jpg";
+        } else if (el==='피카츄'){
+            imgSrc=process.env.PUBLIC_URL+"pikachu.png";
+        } else if (el==='꼬부기'){
+            imgSrc=process.env.PUBLIC_URL+"꼬부기.jpg";
+        } else if (el==='파이리'){
+            imgSrc=process.env.PUBLIC_URL+"파이리.png";
+        } else if (el==='이상해씨'){
+            imgSrc=process.env.PUBLIC_URL+"이상해씨.jpg";
+        }
+        return <Member key={index}><Icon src={imgSrc} /><Name>{el}</Name></Member>;
+    });
+
     return (
         <Container>
-        <Member><Icon src={process.env.PUBLIC_URL+"default-img.jpg"} /><Name>Me</Name></Member>
-        <Member><Icon src={process.env.PUBLIC_URL+"pikachu.png"} /><Name>피카츄</Name></Member>
+            {MemberList}        
         </Container>
     );
 }
