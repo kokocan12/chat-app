@@ -33,7 +33,7 @@ const LoadingIcon = styled.img`
 function Loading(){
     return(
         <Container>
-            <LoadingIcon src={process.env.PUBLIC_URL+"/loading-logo.png"} />
+            <LoadingIcon src={process.env.PUBLIC_URL+"/img/loading-logo.png"} />
         </Container>
     )
 }

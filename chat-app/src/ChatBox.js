@@ -92,19 +92,19 @@ function ChatBox(props){
         let imgSrc='';
         switch(el.name){
             case "Me":
-                imgSrc=process.env.PUBLIC_URL+"default-img.jpg";
+                imgSrc=process.env.PUBLIC_URL+"/img/default-img.jpg";
                 break;
             case "피카츄":
-                imgSrc=process.env.PUBLIC_URL+"pikachu.png";
+                imgSrc=process.env.PUBLIC_URL+"/img/pikachu.png";
                 break;
             case "파이리":
-                imgSrc=process.env.PUBLIC_URL+"파이리.png";
+                imgSrc=process.env.PUBLIC_URL+"/img/파이리.png";
                 break;
             case "꼬부기":
-                imgSrc=process.env.PUBLIC_URL+"꼬부기.jpg";
+                imgSrc=process.env.PUBLIC_URL+"/img/꼬부기.jpg";
                 break;
             case "이상해씨":
-                imgSrc=process.env.PUBLIC_URL+"이상해씨.jpg";
+                imgSrc=process.env.PUBLIC_URL+"/img/이상해씨.jpg";
                 break;
         }
         const ojunohu = el.hours>=12?'오후':'오전';

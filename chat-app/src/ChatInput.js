@@ -72,8 +72,8 @@ function ChatInput(props){
 
     return(
         <Container>
-            <Message onKeyUp={submitMessage} contentEditable={true} onFocus={()=>props.setEmojiBox(false)} suppressContentEditableWarning={true}>채팅창자리</Message>
-            <EmojiButton onClick={(evt)=>props.setEmojiBox(!props.emojiBox)} src={process.env.PUBLIC_URL+"EmojiButton.PNG"}/>
+            <Message onKeyUp={submitMessage} contentEditable={true} onFocus={()=>props.setEmojiBox(false)} suppressContentEditableWarning={true}></Message>
+            <EmojiButton onClick={(evt)=>props.setEmojiBox(!props.emojiBox)} src={process.env.PUBLIC_URL+"/img/EmojiButton.jpg"}/>
             {props.emojiBox&&<EmojiWrap><EmojiBox></EmojiBox></EmojiWrap>}
         </Container>
     );

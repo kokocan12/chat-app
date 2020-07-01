@@ -118,7 +118,7 @@ function InviteFriendsModal(props){
             <Box onClick={(evt)=>{evt.stopPropagation();}}>
                 <Header>친구 초대하기</Header>
                 <FriendWrap data-name="피카츄">
-                    <Image src={process.env.PUBLIC_URL+"pikachu.png"} />
+                    <Image src={process.env.PUBLIC_URL+"/img/pikachu.png"} />
                     <Name>피카츄</Name>
                     {props.currentServer.friends.includes("피카츄")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
@@ -126,7 +126,7 @@ function InviteFriendsModal(props){
                     }
                 </FriendWrap>
                 <FriendWrap data-name="파이리">
-                    <Image src={process.env.PUBLIC_URL+"파이리.png"} />
+                    <Image src={process.env.PUBLIC_URL+"/img/파이리.png"} />
                     <Name>파이리</Name>
                     {props.currentServer.friends.includes("파이리")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
@@ -134,7 +134,7 @@ function InviteFriendsModal(props){
                     }
                 </FriendWrap>
                 <FriendWrap data-name="꼬부기">
-                    <Image src={process.env.PUBLIC_URL+"꼬부기.jpg"} />
+                    <Image src={process.env.PUBLIC_URL+"/img/꼬부기.jpg"} />
                     <Name>꼬부기</Name>
                     {props.currentServer.friends.includes("꼬부기")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
@@ -142,7 +142,7 @@ function InviteFriendsModal(props){
                     }
                 </FriendWrap>
                 <FriendWrap data-name="이상해씨">
-                    <Image src={process.env.PUBLIC_URL+"이상해씨.jpg"} />
+                    <Image src={process.env.PUBLIC_URL+"/img/이상해씨.jpg"} />
                     <Name>이상해씨</Name>
                     {props.currentServer.friends.includes("이상해씨")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:

@@ -42,7 +42,7 @@ function ChatArea(props){
     return (
     <Container onClick={props.offContextMenu}>
         <Header>
-            <HeaderIcon src={process.env.PUBLIC_URL+"hashtag-icon.PNG"} />
+            <HeaderIcon src={process.env.PUBLIC_URL+"/img/hashtag-icon.PNG"} />
             <HeaderTitle>채팅창</HeaderTitle>
         </Header>
         <ChatBox currentServer={props.currentServer} setEmojiBox={setEmojiBox} />

@@ -45,15 +45,15 @@ function MemberContainer(props){
     props.currentServer.friends.map((el, index)=>{
         let imgSrc='';
         if(el==='Me'){
-            imgSrc=process.env.PUBLIC_URL+"default-img.jpg";
+            imgSrc=process.env.PUBLIC_URL+"/img/default-img.jpg";
         } else if (el==='피카츄'){
-            imgSrc=process.env.PUBLIC_URL+"pikachu.png";
+            imgSrc=process.env.PUBLIC_URL+"/img/pikachu.png";
         } else if (el==='꼬부기'){
-            imgSrc=process.env.PUBLIC_URL+"꼬부기.jpg";
+            imgSrc=process.env.PUBLIC_URL+"/img/꼬부기.jpg";
         } else if (el==='파이리'){
-            imgSrc=process.env.PUBLIC_URL+"파이리.png";
+            imgSrc=process.env.PUBLIC_URL+"/img/파이리.png";
         } else if (el==='이상해씨'){
-            imgSrc=process.env.PUBLIC_URL+"이상해씨.jpg";
+            imgSrc=process.env.PUBLIC_URL+"/img/이상해씨.jpg";
         }
         return <Member key={index}><Icon src={imgSrc} /><Name>{el}</Name></Member>;
     });
