@@ -1,5 +1,9 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+import { inviteNewFriend, closeInviteFriends } from '../actions';
+
 
 
 const Container = styled.div`
@@ -75,23 +79,20 @@ const InviteButton=styled.button`
 `;
 
 
-function InviteFriendsModal(props){
- 
-    const inviteNewFriend=(evt)=>{
-        evt.preventDefault();
-        const newServers=props.servers.map(el=>{
-            if(el.key===props.currentServer.key){
-                const updatedEl={
-                    ...props.currentServer,
-                    friends:[...props.currentServer.friends, evt.currentTarget.parentNode.dataset.name],
-                }
-                return updatedEl;
-            }
-            return el;
-        });
+const InviteFriendsModal = (props) => {
 
-        props.setServers(newServers);
-        InviteMessage(evt.currentTarget.parentNode.dataset.name, newServers);
+    const boxRef = useRef();
+
+    const onBoxClick = (evt) => {
+        if (!boxRef.current.contains(evt.target)){
+            props.closeInviteFriends();
+        } 
+    }
+ 
+    const onInviteButtonClick = (evt) => {
+        evt.preventDefault();
+        props.inviteNewFriend(evt.target.parentElement.dataset.name, props.selectedChatRoom.name);
+        
     }
 
     const InviteMessage=(name, servers)=>{
@@ -109,49 +110,59 @@ function InviteFriendsModal(props){
     }
 
     useEffect(()=>{
-    })
+        setTimeout(() => {
+            document.body.addEventListener('click', onBoxClick);
+        }, 100);
+        
+        return () => {
+            document.body.removeEventListener('click', onBoxClick);
+        };
+    }, []);
 
     
 
     return (
-        <Container onClick={()=>{props.setInviteModal(false);}}>
-            <Box onClick={(evt)=>{evt.stopPropagation();}}>
+        <Container>
+            <Box ref={boxRef}>
                 <Header>친구 초대하기</Header>
                 <FriendWrap data-name="피카츄">
                     <Image src={process.env.PUBLIC_URL+"/img/pikachu.png"} />
                     <Name>피카츄</Name>
-                    {props.currentServer.friends.includes("피카츄")?
+                    {props.selectedChatRoom.friends.includes("피카츄")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
-                        <InviteButton inviting="yet" onClick={inviteNewFriend}>초대하기</InviteButton>
+                        <InviteButton inviting="yet" onClick={onInviteButtonClick}>초대하기</InviteButton>
                     }
                 </FriendWrap>
                 <FriendWrap data-name="파이리">
                     <Image src={process.env.PUBLIC_URL+"/img/파이리.png"} />
                     <Name>파이리</Name>
-                    {props.currentServer.friends.includes("파이리")?
+                    {props.selectedChatRoom.friends.includes("파이리")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
-                        <InviteButton inviting="yet" onClick={inviteNewFriend}>초대하기</InviteButton>
+                        <InviteButton inviting="yet" onClick={onInviteButtonClick}>초대하기</InviteButton>
                     }
                 </FriendWrap>
                 <FriendWrap data-name="꼬부기">
                     <Image src={process.env.PUBLIC_URL+"/img/꼬부기.jpg"} />
                     <Name>꼬부기</Name>
-                    {props.currentServer.friends.includes("꼬부기")?
+                    {props.selectedChatRoom.friends.includes("꼬부기")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
-                        <InviteButton inviting="yet" onClick={inviteNewFriend}>초대하기</InviteButton>
+                        <InviteButton inviting="yet" onClick={onInviteButtonClick}>초대하기</InviteButton>
                     }
                 </FriendWrap>
                 <FriendWrap data-name="이상해씨">
                     <Image src={process.env.PUBLIC_URL+"/img/이상해씨.jpg"} />
                     <Name>이상해씨</Name>
-                    {props.currentServer.friends.includes("이상해씨")?
+                    {props.selectedChatRoom.friends.includes("이상해씨")?
                         <InviteButton inviting="done" onClick={evt=>evt.preventDefault()}>초대됨</InviteButton>:
-                        <InviteButton inviting="yet" onClick={inviteNewFriend}>초대하기</InviteButton>
+                        <InviteButton inviting="yet" onClick={onInviteButtonClick}>초대하기</InviteButton>
                     }
                 </FriendWrap>
             </Box>
         </Container>
     );
-}
+};
 
-export default InviteFriendsModal;
+const mapStateToProps = (state) => {
+    return state;
+};
+export default connect(mapStateToProps, { inviteNewFriend, closeInviteFriends })(InviteFriendsModal);

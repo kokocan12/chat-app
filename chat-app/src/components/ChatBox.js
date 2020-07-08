@@ -1,4 +1,5 @@
 import React, {useState,useEffect, createRef} from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 
@@ -86,9 +87,9 @@ const MessageType2=styled.div`
     font-size:16px;
 `;
 
-function ChatBox(props){
+const ChatBox = (props) => {
 
-    const Messages=props.currentServer.chatLog.map(el=>{
+    const Messages=props.selectedChatRoom.chatLog.map(el=>{
         let imgSrc='';
         switch(el.name){
             case "Me":
@@ -135,6 +136,10 @@ function ChatBox(props){
             {Messages}
         </Container>
     );
-}
+};
 
-export default ChatBox;
+const mapStateToProps = (state) => {
+    return state;
+};
+
+export default connect(mapStateToProps)(ChatBox);

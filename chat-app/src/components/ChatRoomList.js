@@ -1,5 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+import { selectChatRoom, openCreateChatRoom } from '../actions';
 
 
 const Container = styled.div`
@@ -48,8 +51,8 @@ const Server = styled.div`
     width:60px;
     height:60px;
     display:block;
-    border-radius:${props=>props.selected==='on'? '20px':'30px'};
-    background-color:${props=>props.selected==='on'? '#7289DA':'#36393f'};
+    border-radius:${props=>props.selected? '20px':'30px'};
+    background-color:${props=>props.selected? '#7289DA':'#36393f'};
     color:#eee;
     font-size:30px;
     margin:10px 0 10px 0;
@@ -102,16 +105,7 @@ const ContextMenu=styled.div`
 `;
 
 
-function LeftBar(props){
-
-    const changeActive=(index)=>{
-        const tmp=props.servers;
-        tmp.forEach(el=>{
-            el.active="off";
-        });
-        tmp[index].active="on";
-        props.setServers([...tmp]);
-    }
+const ChatRoomList = (props) => {
 
     const serverContextMenu=(key)=>{
         const newServers=props.servers.map(el=>{
@@ -125,31 +119,31 @@ function LeftBar(props){
         });
         props.setServers(newServers);
     }
-
-    const deleteServer=(key)=>{
-        const newServers=props.servers.filter(el=>{
-            if(el.key!==key){
-                return el;
-            }
-        });
-        setTimeout(()=>{
-            props.setServers(newServers);
-        }, 0);
-        
-    }
-
     return(
         <Container>
             <div>
-                <ServerAdd onClick={()=>{props.setServerModal(true)}} data-tooltip={"채팅 추가하기"}>+</ServerAdd>
-                {props.servers.map((el, index)=>{
-                    return <Server onContextMenu={evt=>{evt.preventDefault(); serverContextMenu(el.key)}} onClick={()=>changeActive(index)} key={el.key} selected={el.active} data-tooltip={el.name}>{el.name[0]}
-                                {el.contextMenu&&<ContextMenuWrapper><ContextMenu onClick={(evt)=>{evt.preventDefault(); deleteServer(el.key);}}>삭제하기</ContextMenu></ContextMenuWrapper>}
-                            </Server>
+                <ServerAdd onClick={props.openCreateChatRoom} data-tooltip={"채팅 추가하기"}>+</ServerAdd>
+                {props.chatRoomList.map((el)=>{
+                    return (
+                        <Server
+                            key={el.name}
+                            onClick={()=>props.selectChatRoom(el)}
+                            selected={props.selectedChatRoom.name===el.name}
+                            data-tooltip={el.name}>
+                            {el.name[0]}
+                        </Server>
+                    );
                 })}
             </div>
         </Container>
-    )
-}
+    );
+};
 
-export default LeftBar;
+const mapStateToProps = (state) => {
+    return {
+        chatRoomList: state.chatRoomList,
+        selectedChatRoom: state.selectedChatRoom
+    };
+};
+
+export default connect(mapStateToProps, { selectChatRoom, openCreateChatRoom })(ChatRoomList);

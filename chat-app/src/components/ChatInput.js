@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+
+import { createNewChatLog } from '../actions';
 import FriendsMessage from './FriendsMessage';
 
 const Container = styled.div`
@@ -50,25 +53,24 @@ const EmojiBox = styled.div`
     border-radius:10px;
 `;
 
-function ChatInput(props){
+const ChatInput = (props) => {
 
-    const submitMessage=(evt)=>{
-        if(evt.key==='Enter'){
-            const msg=evt.currentTarget.innerText;
-            const t=new Date();
-            evt.currentTarget.innerHTML="";
-            const newServers=props.servers.map(el=>{
-                if(el.key===props.currentServer.key){
-                    const newEl={...el, chatLog:[...el.chatLog, {name:"Me", hours:t.getHours(), minutes:t.getMinutes(),
-                    content:msg}]}
-                    return newEl;
+    const submitMessage = (evt) => {
+        if (evt.key==='Enter') {
+            const msg = evt.currentTarget.innerText;
+            const t = new Date();
+            evt.currentTarget.innerHTML = "";
+            props.createNewChatLog({
+                selectedChatRoomTitle: props.selectedChatRoom.name,
+                chat: {
+                    name: 'Me',
+                    hours: t.getHours(),
+                    minutes: t.getMinutes(),
+                    content: msg
                 }
-                return el;
             });
-            props.setServers(newServers);
-            FriendsMessage(props.currentServer, newServers, props.setServers, msg);
         }
-    }
+    };
 
     return(
         <Container>
@@ -77,9 +79,11 @@ function ChatInput(props){
             {props.emojiBox&&<EmojiWrap><EmojiBox></EmojiBox></EmojiWrap>}
         </Container>
     );
+}; 
+
+
+const mapStateToProps = (state) => {
+    return state;
 }
 
-
-
-
-export default ChatInput;
+export default connect(mapStateToProps, { createNewChatLog })(ChatInput);

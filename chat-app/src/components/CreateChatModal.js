@@ -1,5 +1,8 @@
-import React, {useState, createRef} from 'react';
+import React, {useState, useRef} from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
+
+import { openCreateChatRoom, closeCreateChatRoom, createNewChat } from '../actions';
 
 
 const Container = styled.div`
@@ -61,22 +64,25 @@ const SubmitButton=styled.button`
     margin:0 0 20px 0;
 `;
 
-function CreateServerModal(props){
+const CreateChatModal = ({ openCreateChatRoom, closeCreateChatRoom, createNewChat }) => {
 
-    const [nameRef, setNameRef] = useState(()=>createRef());
+    const nameRef = useRef();
 
-    const requestNewChat=(evt)=>{
+    const requestNewChat = (evt) => {
         evt.preventDefault();
-        props.setServerModal(false);
-        props.servers.forEach(el=>{
-            el.active="off";
-        });
-        props.setServers([...props.servers, {name:nameRef.current.value, active:"on", key:Math.random().toString(),
-            friends:["Me"], contextMenu:false, chatLog:[]}]);
-    }
+        closeCreateChatRoom();
+        createNewChat(
+            {
+                name: nameRef.current.value,
+                friends: ['Me'],
+                contextMenu: false,
+                chatLog: []
+            }
+        );
+    };
 
     return (
-        <Container onClick={()=>{props.setServerModal(false);}}>
+        <Container>
             <Box onSubmit={requestNewChat} onClick={(evt)=>{evt.stopPropagation();}}>
                 <Header>채팅방 만들기</Header>
                 <TitleWrap>
@@ -87,6 +93,10 @@ function CreateServerModal(props){
             </Box>
         </Container>
     );
-}
+};
 
-export default CreateServerModal;
+const mapStateToProps = (state) => {
+    return state;
+};
+
+export default connect(mapStateToProps, { openCreateChatRoom, closeCreateChatRoom, createNewChat })(CreateChatModal);

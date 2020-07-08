@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
+
 import ChatBox from './ChatBox';
 import ChatInput from './ChatInput';
 
@@ -40,13 +41,13 @@ function ChatArea(props){
     const [emojiBox, setEmojiBox]=useState(false);
 
     return (
-    <Container onClick={props.offContextMenu}>
+    <Container>
         <Header>
             <HeaderIcon src={process.env.PUBLIC_URL+"/img/hashtag-icon.PNG"} />
             <HeaderTitle>채팅창</HeaderTitle>
         </Header>
-        <ChatBox currentServer={props.currentServer} setEmojiBox={setEmojiBox} />
-        <ChatInput servers={props.servers} setServers={props.setServers} currentServer={props.currentServer} emojiBox={emojiBox} setEmojiBox={setEmojiBox} />
+        <ChatBox setEmojiBox={setEmojiBox} />
+        <ChatInput emojiBox={emojiBox} setEmojiBox={setEmojiBox} />
     </Container>
     );
 }

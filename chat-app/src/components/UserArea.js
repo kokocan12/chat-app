@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { openInviteFriends } from '../actions';
+
 import MemberContainer from './MemberContainer';
 import Settings from './Settings';
 
@@ -54,17 +57,22 @@ const MemberCounter = styled.div`
     user-select:none;   
 `;
 
-function UserArea(props){
+const UserArea = ({ openInviteFriends, selectedChatRoom }) => {
     return(
-        <Container onClick={props.offContextMenu}>
-            <Header>{props.title}</Header>
-            <InviteButton onClick={()=>props.setInviteModal(true)}>친구초대하기</InviteButton>
-            <MemberCounter>온라인-{props.currentServer.friends.length}</MemberCounter>
-            <MemberContainer currentServer={props.currentServer} />
+        <Container>
+            <Header>{selectedChatRoom.name}</Header>
+            <InviteButton onClick={openInviteFriends}>친구초대하기</InviteButton>
+            <MemberCounter>온라인-{selectedChatRoom.friends.length}</MemberCounter>
+            <MemberContainer currentServer={selectedChatRoom} />
             <Settings />
         </Container>
-    )
-}
+    );
+};
 
+const mapStateToProps = (state) => {
+    return {
+        selectedChatRoom: state.selectedChatRoom
+    };
+};
 
-export default UserArea;
+export default connect(mapStateToProps, { openInviteFriends })(UserArea);
