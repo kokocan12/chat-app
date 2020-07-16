@@ -20,7 +20,7 @@ const Message = styled.div`
 function NoChatAlert(props){
     return (
         <Container>
-            <Message>채팅이 존재하지 않습니다.</Message>
+            <Message>채팅방을 선택해주세요..!</Message>
         </Container>
     )
 }

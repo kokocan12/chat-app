@@ -40,7 +40,7 @@ function Settings(props){
     return(
         <Container>
             <Icon src={process.env.PUBLIC_URL+"/img/default-img.jpg"} />
-            <Name>Me</Name>
+            <Name>{props.myId}</Name>
             <SettingIcon src={process.env.PUBLIC_URL+"/img/settings-icon.jpg"} />
         </Container>
     );

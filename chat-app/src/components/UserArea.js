@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { openInviteFriends } from '../actions';
 
+import { setId, updateUser, reverseTotalUserModal } from '../actions';
 import MemberContainer from './MemberContainer';
 import Settings from './Settings';
 
@@ -57,22 +57,23 @@ const MemberCounter = styled.div`
     user-select:none;   
 `;
 
-const UserArea = ({ openInviteFriends, selectedChatRoom }) => {
+const UserArea = (props) => {
+    const userList = props.userList.filter(el => 
+        el.chat === props.selectedChatRoom.title
+    );
     return(
         <Container>
-            <Header>{selectedChatRoom.name}</Header>
-            <InviteButton onClick={openInviteFriends}>친구초대하기</InviteButton>
-            <MemberCounter>온라인-{selectedChatRoom.friends.length}</MemberCounter>
-            <MemberContainer currentServer={selectedChatRoom} />
-            <Settings />
+            <Header>{props.selectedChatRoom.title}</Header>
+            <InviteButton onClick={props.reverseTotalUserModal}>모든 접속자</InviteButton>
+            <MemberCounter>현재 채팅방 접속자-{userList.length}</MemberCounter>
+            <MemberContainer userList={userList} />
+            <Settings myId={props.myId} />
         </Container>
     );
 };
 
 const mapStateToProps = (state) => {
-    return {
-        selectedChatRoom: state.selectedChatRoom
-    };
+    return state;
 };
 
-export default connect(mapStateToProps, { openInviteFriends })(UserArea);
+export default connect(mapStateToProps, { setId, updateUser, reverseTotalUserModal })(UserArea);

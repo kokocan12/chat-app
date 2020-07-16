@@ -2,8 +2,10 @@ import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
-import { createNewChatLog } from '../actions';
+import { createNewChatLog, selectChatRoom } from '../actions';
 import FriendsMessage from './FriendsMessage';
+
+import ws from '../apis/webSocket';
 
 const Container = styled.div`
     height:68px;
@@ -60,15 +62,23 @@ const ChatInput = (props) => {
             const msg = evt.currentTarget.innerText;
             const t = new Date();
             evt.currentTarget.innerHTML = "";
-            props.createNewChatLog({
-                selectedChatRoomTitle: props.selectedChatRoom.name,
-                chat: {
-                    name: 'Me',
-                    hours: t.getHours(),
-                    minutes: t.getMinutes(),
-                    content: msg
-                }
-            });
+            let msgObj = {
+                chatRoomTitle: props.selectedChatRoom.title,
+                writer: props.myId,
+                years: (Number)(t.getFullYear()),
+                months: (Number)(t.getMonth()+1),
+                days: (Number)(t.getDate()),
+                hours: (Number)(t.getHours()),
+                minutes: (Number)(t.getMinutes()),
+                content: msg   
+            }
+            props.createNewChatLog(msgObj);
+            let obj1 = {
+                type: 'SOCKET_CHAT_UPDATE',
+                payload1: JSON.stringify(msgObj),
+                payload2: props.selectedChatRoom.title
+            };
+            ws.send(JSON.stringify(obj1));
         }
     };
 
@@ -86,4 +96,4 @@ const mapStateToProps = (state) => {
     return state;
 }
 
-export default connect(mapStateToProps, { createNewChatLog })(ChatInput);
+export default connect(mapStateToProps, { createNewChatLog, selectChatRoom })(ChatInput);

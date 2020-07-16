@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import { selectChatRoom, openCreateChatRoom } from '../actions';
+import { fetchChatRoomList, selectChatRoom, updateUser } from '../actions';
 
 
 const Container = styled.div`
@@ -107,43 +107,39 @@ const ContextMenu=styled.div`
 
 const ChatRoomList = (props) => {
 
-    const serverContextMenu=(key)=>{
-        const newServers=props.servers.map(el=>{
-            if(el.key===key){
-                const newEl={...el, contextMenu:true}
-                return newEl;
-            } else {
-                const newEl={...el, contextMenu:false}
-                return newEl;
-            }
-        });
-        props.setServers(newServers);
-    }
+    useEffect(() => {
+        props.fetchChatRoomList();
+    }, []);
+
+
+    const serverList = props.chatRoomList.map(el => {
+        let selected;
+        if(props.selectedChatRoom){
+            selected=props.selectedChatRoom.title===el.title;
+        }
+        return (
+            <Server
+                key={el.title}
+                onClick={()=>{props.selectChatRoom(el.title, props.myId); updateUser([1,2,3]);}}
+                selected={selected}
+                data-tooltip={el.title}>
+                {el.title[0]}
+            </Server>
+        );
+    });
+
     return(
         <Container>
             <div>
                 <ServerAdd onClick={props.openCreateChatRoom} data-tooltip={"채팅 추가하기"}>+</ServerAdd>
-                {props.chatRoomList.map((el)=>{
-                    return (
-                        <Server
-                            key={el.name}
-                            onClick={()=>props.selectChatRoom(el)}
-                            selected={props.selectedChatRoom.name===el.name}
-                            data-tooltip={el.name}>
-                            {el.name[0]}
-                        </Server>
-                    );
-                })}
+                {serverList}
             </div>
         </Container>
     );
 };
 
 const mapStateToProps = (state) => {
-    return {
-        chatRoomList: state.chatRoomList,
-        selectedChatRoom: state.selectedChatRoom
-    };
+    return state;
 };
 
-export default connect(mapStateToProps, { selectChatRoom, openCreateChatRoom })(ChatRoomList);
+export default connect(mapStateToProps, { fetchChatRoomList, selectChatRoom, updateUser })(ChatRoomList);

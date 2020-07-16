@@ -1,84 +1,31 @@
 import { combineReducers } from 'redux';
 
-const initialChatRoomList = [
-    {
-        name: '공부',
-        friends: ['Me', '피카츄', '이상해씨'],
-        contextMenu: false,
-        chatLog: [
-            { name: 'Me', hours: 12, minutes: 17, content: '안녕하세요?' },
-            { name : '피카츄', hours: 12, minutes: 18, content: '초대해주셔서 감사합니다.' }
-        ]
-    },
-   {
-       name: '잡담',
-       friends: ['Me'],
-       contextMenu: false,
-       chatLog: [
-           { name: 'Me', hours: 6, minutes: 12, content: '반갑습니다.' }
-        ]
+const chatRoomListReducer = (chatList = [], action) => {
+    switch (action.type) {
+        case 'FETCH_CHAT_ROOM':
+            return action.payload;
+        default:
+            return chatList;
     }
-];
-
-const chatRoomListReducer = (chatList = initialChatRoomList, action) => {
-    
-    if (action.type === 'CREATE_NEW_CHAT') {
-        return [
-            ...chatList,
-            action.payload
-        ];
-    }
-
-    if (action.type === 'CREATE_NEW_CHAT_LOG') {
-        return chatList.map(el => {
-            if (el.name === action.payload.selectedChatRoomTitle) {
-                return {
-                    ...el,
-                    chatLog: [...el.chatLog, action.payload.chat]
-                };
-            }
-            return el;
-        });
-    }
-
-    if (action.type === 'INVITE_NEW_FRIEND') {
-        return chatList.map(el=>{
-            if (el.name === action.payload.title) {
-                return {
-                    ...el,
-                    friends: [...el.friends, action.payload.name]
-                };
-            }
-            return el;
-        });
-    }
-
-    return chatList;
 };
 
-const selectedChatRoomReducer = (selectedChatRoom = initialChatRoomList[0], action) => {
-    if (action.type === 'CHAT_ROOM_SELECTED') {
-        return action.payload;
+const selectedChatRoomReducer = (chatRoom = null, action) => {
+    switch (action.type) {
+        case 'SELECT_CHAT_ROOM':
+            return action.payload;
+        case 'SOCKET_CHAT_UPDATE':
+            return {
+                ...chatRoom,
+                chatLog: [
+                    ...chatRoom.chatLog,
+                    action.payload
+                ]
+            }
+        default:
+            return chatRoom;
     }
-
-    if (action.type === 'INVITE_NEW_FRIEND' && action.payload.title === selectedChatRoom.name) {
-        return {
-            ...selectedChatRoom,
-            friends: [...selectedChatRoom.friends, action.payload.name]
-        };
-    }
-    if (action.type === 'CREATE_NEW_CHAT_LOG') {
-        return {
-            ...selectedChatRoom,
-            chatLog: [
-                ...selectedChatRoom.chatLog,
-                action.payload.chat
-            ]
-        };
-    }
-
-    return selectedChatRoom;
 };
+
 
 const createChatRoomModalReducer = (createChatRoomModal = false, action) => {
     if (action.type === 'CREATE_MODAL_ON') {
@@ -92,21 +39,33 @@ const createChatRoomModalReducer = (createChatRoomModal = false, action) => {
     return createChatRoomModal;
 };
 
-const inviteFriendsModalReducer = (inviteFriendsModal = false, action) => {
-    if (action.type === 'INVITE_MODAL_ON') {
-        return true;
+const totalUserModalReducer = (state = false, action) => {
+    if (action.type === 'REVERSE_TOTAL_USER_MODAL') {
+        return !state;
+    }
+    return state;
+};
+
+const myIdReducer = (name = '', action) => {
+    if (action.type === 'SET_ID') {
+        return action.payload;
     }
 
-    if (action.type === 'INVITE_MODAL_OFF') {
-        return false;
-    }
+    return name;
+};
 
-    return inviteFriendsModal;
+const userListReducer = (userList = [], action) => {
+    if (action.type == 'UPDATE_USER_INFO') {
+        return action.payload;
+    }
+    return userList;
 };
 
 export default combineReducers({
     chatRoomList: chatRoomListReducer,
     selectedChatRoom: selectedChatRoomReducer,
-    createModal: createChatRoomModalReducer,
-    inviteModal: inviteFriendsModalReducer,
+    myId: myIdReducer,
+    userList: userListReducer,
+    createChatRoomModal: createChatRoomModalReducer,
+    totalUserModal: totalUserModalReducer
 });

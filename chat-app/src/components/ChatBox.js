@@ -88,26 +88,9 @@ const MessageType2=styled.div`
 `;
 
 const ChatBox = (props) => {
-
     const Messages=props.selectedChatRoom.chatLog.map(el=>{
-        let imgSrc='';
-        switch(el.name){
-            case "Me":
-                imgSrc=process.env.PUBLIC_URL+"/img/default-img.jpg";
-                break;
-            case "피카츄":
-                imgSrc=process.env.PUBLIC_URL+"/img/pikachu.png";
-                break;
-            case "파이리":
-                imgSrc=process.env.PUBLIC_URL+"/img/파이리.png";
-                break;
-            case "꼬부기":
-                imgSrc=process.env.PUBLIC_URL+"/img/꼬부기.jpg";
-                break;
-            case "이상해씨":
-                imgSrc=process.env.PUBLIC_URL+"/img/이상해씨.jpg";
-                break;
-        }
+        let imgSrc=process.env.PUBLIC_URL+'/img/default-img.jpg';
+        
         const ojunohu = el.hours>=12?'오후':'오전';
         const hours_=el.hours>12? el.hours-12:el.hours;
         const minutes_=el.minutes<10? `0${el.minutes}`:`${el.minutes}`;
@@ -116,7 +99,7 @@ const ChatBox = (props) => {
                 <Icon src={imgSrc} />
                 <RightCol>
                     <NameArea>
-                        <Name>{el.name}</Name><Time>{ojunohu} {hours_}:{minutes_}</Time>
+                        <Name>{el.writer}</Name><Time>{el.years}-{el.months}-{el.days} {ojunohu} {hours_}:{minutes_}</Time>
                     </NameArea>
                     <Contents>
                         {el.content}
