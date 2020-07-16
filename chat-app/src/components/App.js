@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 
@@ -9,7 +9,6 @@ import UserArea from './UserArea';
 import ChatArea from './ChatArea';
 import Loading from './Loading';
 import CreateServerModal from './CreateChatModal';
-import InviteFriendsModal from './TotalUserModal';
 import NoChatAlert from './NoChatAlert';
 
 import ws from '../apis/webSocket';
@@ -28,7 +27,13 @@ const Container = styled.div`
 
 function App({ createModal, selectedChatRoom, selectChatRoom, setId, updateSocketChatLog, updateUser, totalUserModal }){
   
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    ws.onopen = (msg) => {
+      setLoading(false);
+      console.log(msg);
+    }
     ws.onmessage = (msg) => {
       let json = JSON.parse(msg.data);
 
@@ -51,30 +56,40 @@ function App({ createModal, selectedChatRoom, selectChatRoom, setId, updateSocke
         }
       }
     };
-    ws.onopen = (msg) => {
-      console.log("웹소켓 열림");
-    }
     ws.onclose = (msg) => {
-      console.log("웹소켓 닫힘");
+      console.log("연결해제");
     };
-  });
+  }, []);
 
-  return (
-    <Container>
-      <ChatRoomList />
-      {selectedChatRoom&&
-      <UserArea />}
-      {selectedChatRoom&&
-      <ChatArea />}
-      {!selectedChatRoom&&
-      <NoChatAlert />}
-      {createModal&&
-      <CreateServerModal />}
-      {totalUserModal&&
-      <TotalUserModal />}
-    </Container>
-  );
+  const contents = (() => {
+    
+    if (loading) {
+      return (
+        <Container>
+          <Loading />
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <ChatRoomList />
+          {selectedChatRoom&&
+          <UserArea />}
+          {selectedChatRoom&&
+          <ChatArea />}
+          {!selectedChatRoom&&
+          <NoChatAlert />}
+          {createModal&&
+          <CreateServerModal />}
+          {totalUserModal&&
+          <TotalUserModal />}
+        </Container>
+      );
+    }
+  })();
+
   
+  return contents;
 };
 
 const mapStateToProps = (state) => {

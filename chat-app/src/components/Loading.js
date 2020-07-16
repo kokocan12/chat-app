@@ -30,10 +30,15 @@ const LoadingIcon = styled.img`
     animation: ${bounceAnimation} 2s 1s infinite linear alternate;
 `;
 
+const LoadingMsg = styled.h1`
+    color: white;
+    font-size: 32px;
+`;
+
 function Loading(){
     return(
         <Container>
-            <LoadingIcon src={process.env.PUBLIC_URL+"/img/loading-logo.png"} />
+            <LoadingMsg>서버에 접속중입니다. 3초안에 접속이 안되면 새로고침해주세요..!</LoadingMsg>
         </Container>
     )
 }
